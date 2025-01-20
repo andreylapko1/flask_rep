@@ -2,10 +2,10 @@ from flask import Flask
 
 app = Flask(__name__)
 
-
-app.route('/')
+@app.route('/')
 def main():
-    return '<h3 >Hello World! </h3>'
+    return '<h3> Hello World! </h3>'
+
 
 
 

@@ -10,3 +10,6 @@ def hello():
 @app.route('/hello/<name>')
 def hello_by_name(name):
     return f'Hello, {name}!'
+
+if  __name__ == '__main__':
+    app.run(debag=True)

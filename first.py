@@ -24,6 +24,7 @@ def multiplydot(a):
 
 @app.route('/div/<path:a>')
 def to_path(a):
+    a = a.split('/')
     return f'{a[::-1]}'
 
 

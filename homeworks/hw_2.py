@@ -12,13 +12,16 @@ class User(BaseModel):
     is_employed: bool = Field(default=False, description='user\'s employment status', alias='employed')
     address: Address
 
+    @field_validator('is_employed')
+    def validate_age(cls, is_employed, values):
+        age = values.data['age']
+        print(is_employed, age)
+        if not is_employed:
+            return is_employed
+        if is_employed and 65 > age > 18:
+            return is_employed
+        raise ValueError('Age must be between 18 and 65 if employed')
 
-    @field_validator('age')
-    def validate_age(cls, age, info: ValidationInfo):
-        is_employed = info.data.get('is_employed', False)
-        if is_employed and (age < 18 or age > 65):
-            raise ValueError('Age must be between 18 and 65 if employed')
-        return age
 
 
     @field_validator('name')
@@ -34,9 +37,9 @@ class User(BaseModel):
 valid_data = '''
 {
         "name": "John Doe",
-        "age": 70,
+        "age": 17,
         "email": "john.doe@example.com",
-        "employed": true,
+        "employed": false,
         "address": {
             "city": "New York",
             "street": "5th Avenue",
@@ -60,12 +63,10 @@ invalid_data = '''
 
 '''
 
-
-
 def json_unpack(data_json):
     user = User.model_validate_json(data_json)
     return user.model_dump_json(indent=2)
 
 if __name__ == '__main__':
-    print(json_unpack(invalid_data))
+    print(json_unpack(valid_data))
 

@@ -6,7 +6,7 @@ class Address(BaseModel):
     house: int = Field(..., gt=0, description='House number')
 
 class User(BaseModel):
-    name: str = Field(..., min_length=2, description='User name, min 2 char')
+    name: str = Field(..., min_length=2, pattern=r'^[A-Za-z\s]+$' ,description='User name, min 2 char')
     age: int = Field(..., ge=0, le=120, description='User age (between 0 and 120)')
     email: EmailStr
     is_employed: bool = Field(default=False, description='user\'s employment status', alias='employed')
@@ -24,11 +24,6 @@ class User(BaseModel):
 
 
 
-    @field_validator('name')
-    def validate_name(cls, value):
-        if value.replace(' ', '').isalpha():
-            return value
-        raise ValueError('Name must be char')
 
     def __str__(self):
         return f'{self.name} {self.address.city} {self.address.street}'\
@@ -37,9 +32,9 @@ class User(BaseModel):
 valid_data = '''
 {
         "name": "John Doe",
-        "age": 17,
+        "age": 33,
         "email": "john.doe@example.com",
-        "employed": false,
+        "employed": true,
         "address": {
             "city": "New York",
             "street": "5th Avenue",

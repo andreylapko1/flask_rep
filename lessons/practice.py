@@ -10,7 +10,7 @@ class Event(BaseModel):
     location: str
 
     @field_validator('date')
-    def data_validaion(cls, value):
+    def data_validation(cls, value):
         if value < datetime.now():
             raise ValidationError('Date must be in the future')
         return value
@@ -44,7 +44,7 @@ class User(Base):
     name = Column(String(50), nullable=False)
     age = Column(Integer, nullable=False)
 
-user_alchemy = User(name='Andrey', age=18)
+user_alchemy = User(name='Andrey', age=99)
 print(user_alchemy)
 
 class Post(Base):

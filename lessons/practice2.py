@@ -42,33 +42,33 @@ with Session() as session:
     session.add_all([user1, user2, user3, user4, user5, user6, user7, user8])
     session.commit()
 
-    # user = session.query(User).filter(User.name == 'Charlie').first()
-    #
-    # session.delete(user)
-    # session.commit()
+    user = session.query(User).filter(User.name == 'Charlie').first()
+
+    session.delete(user)
+    session.commit()
 
 
-    # exist = session.query(session.query(User).filter(User.name == 'Charlie').exists())
-    # if exist:
-    #     print('exist')
-    #
-    # avg = session.query(func.avg(User.age)).scalar()
-    # print(avg)
+    exist = session.query(session.query(User).filter(User.name == 'Charlie').exists())
+    if exist:
+        print('exist')
 
-    # maxmin = session.query(func.max(User.age), func.min(User.age)).first()
-    # max_age, min_age = maxmin
-    # print(max_age)
-    # print(min_age)
+    avg = session.query(func.avg(User.age)).scalar()
+    print(avg)
 
-    # group = session.query(User.age, func.count(User.id)).group_by(User.age).having(func.count(User.id) > 1).all()
-    # for age, count in group:
-    #     print(age, count)
+    maxmin = session.query(func.max(User.age), func.min(User.age)).first()
+    max_age, min_age = maxmin
+    print(max_age)
+    print(min_age)
+
+    group = session.query(User.age, func.count(User.id)).group_by(User.age).having(func.count(User.id) > 1).all()
+    for age, count in group:
+        print(age, count)
 
     avg = session.query(func.avg(User.age).label('avg')).subquery()
     query = session.query(User).filter(User.age > avg.c.avg).all()
 
-    # for user in query:
-        # print(user.age)
+    for user in query:
+        print(user.age)
 
 
     auery = session.query(User.name, Address.description).join(User.addresses).all()
